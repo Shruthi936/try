@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Shield, User, Mail, Lock, BadgeCheck, Building2, Eye, EyeOff } from "lucide-react";
 
@@ -19,7 +19,6 @@ function getPasswordStrength(password) {
 
 export default function Signup() {
   const { signup } = useAuth();
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     displayName: "",
     email: "",
@@ -31,9 +30,13 @@ export default function Signup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+<<<<<<< HEAD
   const [showConfirm, setShowConfirm] = useState(false);
 
   const strength = getPasswordStrength(form.password);
+=======
+  const [registered, setRegistered] = useState(false);
+>>>>>>> 3c9f813 (mail verification)
 
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -48,13 +51,48 @@ export default function Signup() {
     setLoading(true);
     try {
       await signup(form.email, form.password, form.displayName, form.badgeId, form.department);
-      navigate("/dashboard");
+      setRegistered(true);
     } catch (err) {
       setError(err.message || "Failed to create account.");
     }
     setLoading(false);
   }
 
+  // ── Email Verification Screen ──────────────────────────────────────────────
+  if (registered) {
+    return (
+      <div className="min-h-screen bg-surface flex items-center justify-center px-4 pt-16">
+        <div className="absolute inset-0 bg-grid-pattern bg-grid opacity-20 pointer-events-none" />
+        <div className="relative w-full max-w-md">
+          <div className="bg-surface-elevated border border-surface-border rounded-2xl p-8 shadow-card text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-primary/10 border border-primary/30 rounded-2xl mb-4">
+              <Mail className="w-7 h-7 text-primary" />
+            </div>
+            <h2 className="font-display text-2xl tracking-wider text-text-primary mb-2">
+              VERIFY YOUR <span className="text-primary">EMAIL</span>
+            </h2>
+            <p className="font-body text-sm text-text-secondary mt-3 leading-relaxed">
+              A verification link has been sent to{" "}
+              <span className="text-primary font-semibold">{form.email}</span>.
+              <br />
+              Please check your inbox and click the link to activate your account before logging in.
+            </p>
+            <p className="font-body text-xs text-text-muted mt-3">
+              Didn't receive it? Check your spam folder.
+            </p>
+            <Link
+              to="/login"
+              className="inline-block mt-6 px-6 py-3 bg-primary text-surface font-body font-bold rounded-lg hover:bg-primary-dark transition-all shadow-glow"
+            >
+              Go to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Registration Form ──────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-4 pt-16 pb-8">
       <div className="absolute inset-0 bg-grid-pattern bg-grid opacity-20 pointer-events-none" />

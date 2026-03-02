@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Shield, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { auth } from "../firebase/config";
 
 export default function Login() {
   const { login, resetPassword } = useAuth();
@@ -21,7 +22,16 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await login(email, password);
+      const result = await login(email, password);
+    
+      // Check if email is verified
+      if (!result.user.emailVerified) {
+        await auth.signOut(); // sign them out immediately
+        setError("Please verify your email before logging in. Check your inbox.");
+        setLoading(false);
+        return;
+      }
+
       navigate("/dashboard");
     } catch (err) {
       setError("Invalid credentials. Please check your email and password.");

@@ -4,7 +4,11 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+<<<<<<< HEAD
   sendPasswordResetEmail,
+=======
+  sendEmailVerification,
+>>>>>>> 3c9f813 (mail verification)
 } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
@@ -22,6 +26,11 @@ export function AuthProvider({ children }) {
 
   async function signup(email, password, displayName, badgeId, department) {
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Send verification email
+    await sendEmailVerification(user);
+
+
     await setDoc(doc(db, "users", user.uid), {
       uid: user.uid,
       email,
@@ -33,6 +42,7 @@ export function AuthProvider({ children }) {
       createdAt: serverTimestamp(),
       lastSeen: serverTimestamp(),
       totalLinksGenerated: 0,
+      emailVerified: false,
     });
     return user;
   }
@@ -75,15 +85,21 @@ export function AuthProvider({ children }) {
       setCurrentUser(user);
       if (user) {
         await fetchUserProfile(user.uid);
-        await updateDoc(doc(db, "users", user.uid), {
+        await setDoc(doc(db, "users", user.uid), {
           lastSeen: serverTimestamp(),
+<<<<<<< HEAD
         });
+=======
+        }, { merge: true });  // ← merge:true creates doc if missing, updates if exists
+
+        // Clear any existing interval
+>>>>>>> 3c9f813 (mail verification)
         if (interval) clearInterval(interval);
         interval = setInterval(async () => {
           try {
-            await updateDoc(doc(db, "users", user.uid), {
+            await setDoc(doc(db, "users", user.uid), {
               lastSeen: serverTimestamp(),
-            });
+            }, { merge: true });
           } catch (e) {}
         }, 2 * 60 * 1000);
       } else {
