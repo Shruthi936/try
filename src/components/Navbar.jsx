@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Shield, Menu, X, LogOut, Zap } from "lucide-react";
 
 export default function Navbar() {
-  const { currentUser, userProfile, logout } = useAuth();
+  const { isAuthenticated, userProfile, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -41,11 +41,10 @@ export default function Navbar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`font-body text-sm tracking-wider uppercase transition-colors duration-200 ${
-                  location.pathname === link.to
+                className={`font-body text-sm tracking-wider uppercase transition-colors duration-200 ${location.pathname === link.to
                     ? "text-primary"
                     : "text-text-secondary hover:text-text-primary"
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -53,7 +52,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            {currentUser ? (
+            {isAuthenticated && userProfile ? (
               <>
                 <Link to="/dashboard">
                   <div className="flex items-center gap-2 bg-surface-card border border-surface-border rounded-full px-4 py-1.5">
@@ -116,7 +115,7 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          {currentUser ? (
+          {isAuthenticated && userProfile ? (
             <>
               <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="block text-sm text-primary py-2">
                 Dashboard

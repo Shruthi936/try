@@ -150,13 +150,12 @@ export default function Signup() {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted w-4 h-4" />
                 <input type={showConfirm ? "text" : "password"} name="confirmPassword" value={form.confirmPassword} onChange={handleChange}
                   placeholder="Repeat password" required
-                  className={`w-full bg-surface border rounded-lg pl-10 pr-10 py-3 font-body text-sm text-text-primary placeholder:text-text-muted focus:outline-none transition-colors ${
-                    form.confirmPassword && form.confirmPassword !== form.password
+                  className={`w-full bg-surface border rounded-lg pl-10 pr-10 py-3 font-body text-sm text-text-primary placeholder:text-text-muted focus:outline-none transition-colors ${form.confirmPassword && form.confirmPassword !== form.password
                       ? "border-red-500 focus:border-red-500"
                       : form.confirmPassword && form.confirmPassword === form.password
-                      ? "border-green-500 focus:border-green-500"
-                      : "border-surface-border focus:border-primary"
-                  }`} />
+                        ? "border-green-500 focus:border-green-500"
+                        : "border-surface-border focus:border-primary"
+                    }`} />
                 <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary">
                   {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
