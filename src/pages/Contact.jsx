@@ -60,9 +60,9 @@ export default function Contact() {
     setSent(true);
   }
 
-  const LAT = 12.8675;
-  const LON = 74.8425;
-  const MAPS_URL = `https://www.google.com/maps/search/SurePass+Academy+Mangalore/@${LAT},${LON},17z`;
+  const LAT = 12.8766748;
+  const LON = 74.8415473;
+  const MAPS_URL = `https://www.google.com/maps/place/SURE+PASS/@12.8766748,74.8415473,17z`;
 
   return (
     <div className="min-h-screen bg-surface text-text-primary overflow-hidden">
@@ -149,7 +149,7 @@ export default function Contact() {
                     filter: "invert(90%) hue-rotate(180deg) saturate(0.7) brightness(0.85)",
                     pointerEvents: "none",
                   }}
-                  src={`https://maps.google.com/maps?q=SurePass+Academy,+MG+Road,+Mangalore&ll=${LAT},${LON}&z=16&output=embed`}
+                  src={`https://maps.google.com/maps?q=12.8766748,74.8415473&ll=12.8766748,74.8415473&z=17&output=embed`}
                   allowFullScreen
                 />
                 {/* Open in Maps badge inside map */}
@@ -187,7 +187,7 @@ export default function Contact() {
                   <FormInput label="Subject" name="subject" value={form.subject} onChange={handleChange} placeholder="Technical issue / New registration / Other" required />
                   <div>
                     <label className="block font-body text-xs text-text-secondary uppercase tracking-wider mb-1.5">Message</label>
-                    <textarea name="message" value={form.message} onChange={handleChange} rows={6} required
+                    <textarea name="message" value={form.message} onChange={handleChange} rows={9} required
                       placeholder="Describe your issue or query..."
                       className="w-full bg-surface border border-surface-border rounded-lg px-4 py-3 font-body text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors resize-none" />
                   </div>
