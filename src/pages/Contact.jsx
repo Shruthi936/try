@@ -84,7 +84,7 @@ export default function Contact() {
               Support · Mon–Sat · 9AM–6PM IST
             </span>
           </div>
-          <h1 className="font-display text-7xl md:text-9xl text-text-primary leading-none mb-6 tracking-wider whitespace-nowrap">
+          <h1 className="font-display text-5xl md:text-6xl text-text-primary leading-none mb-6 tracking-wider">
             CONTACT <span className="text-primary" style={{ textShadow: "0 0 40px rgba(0,212,255,0.5)" }}>US.</span>
           </h1>
           <p className="font-body text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
