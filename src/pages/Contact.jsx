@@ -81,6 +81,12 @@ const [attachment, setAttachment] = useState(null);//changes
 
 async function handleSubmit(e) {
   e.preventDefault();
+  
+  if (!captchaToken) {
+    alert("Please complete the captcha first.");
+    return;
+  }
+  
   setSending(true);
   
   try {
@@ -112,6 +118,7 @@ async function handleSubmit(e) {
   } finally {
   setSending(false);
   hcaptchaRef.current?.resetCaptcha();
+  setCaptchaToken(null);
 }
 }
 
