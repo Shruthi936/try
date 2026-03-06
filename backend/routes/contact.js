@@ -35,7 +35,7 @@ if (!captchaResponse.data.success) {
       },
       to: [{ 
         email: "kshreya4207@gmail.com", 
-        name: "Shruthi" 
+        name: "Shreya" ,
       }],
       subject: `[Traxelon Contact] ${form.subject}`,
       htmlContent: `
