@@ -2,10 +2,14 @@ import React, { useRef, useEffect, useState } from "react";
 import { Mail, MapPin, Send, Shield, Activity, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaWhatsapp } from "react-icons/fa";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", badge: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
+  const hcaptchaRef = useRef(null);
+const [captchaToken, setCaptchaToken] = useState(null);
+  
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -56,10 +60,43 @@ export default function Contact() {
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   }
-  function handleSubmit(e) {
-    e.preventDefault();
-    setSent(true);
-  }
+
+  const [sending, setSending] = useState(false);
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  setSending(true);
+  
+  try {
+    const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+    const response = await fetch(`${BASE_URL}/api/contact/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+      form,
+      captchaToken,
+      attachment: null,
+}),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setSent(true);
+      setForm({ name: "", email: "", badge: "", subject: "", message: "" });
+    } else {
+      alert(data.error || "Failed to send. Please try again.");
+    }
+  } catch (err) {
+    console.error("Contact form error:", err);
+    alert("Something went wrong. Please try again.");
+  } finally {
+  setSending(false);
+  hcaptchaRef.current?.resetCaptcha();
+}
+}
 
   const LAT = 12.8766748;
   const LON = 74.8415473;
@@ -192,7 +229,14 @@ export default function Contact() {
                       placeholder="Describe your issue or query..."
                       className="w-full bg-surface border border-surface-border rounded-lg px-4 py-3 font-body text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors resize-none" />
                   </div>
-
+                  
+<HCaptcha
+  sitekey="2c7ab4e4-6cd4-43fa-9416-57f458ea07c6"
+  onVerify={(token) => setCaptchaToken(token)}
+  onExpire={() => setCaptchaToken(null)}
+  ref={hcaptchaRef}
+  theme="dark"
+/>
                   <button type="submit"
                     className="w-full px-6 py-3.5 bg-primary text-surface font-body font-bold rounded-lg hover:bg-primary-dark transition-all shadow-glow flex items-center justify-center gap-2">
                     <Send className="w-4 h-4" /> Send Message
