@@ -15,6 +15,7 @@ app.use(cors({
         "http://localhost:3000",
         "http://localhost:5173",
         "https://traxalon-main-01.vercel.app",
+        "https://try-phi-livid.vercel.app",
         // Add your Vercel URL here
     ],
     methods: ["GET", "POST", "OPTIONS"],

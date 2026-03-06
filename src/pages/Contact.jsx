@@ -68,7 +68,7 @@ async function handleSubmit(e) {
   setSending(true);
   
   try {
-    const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+    const BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
     const response = await fetch(`${BASE_URL}/api/contact/send`, {
       method: "POST",
       headers: {
@@ -143,7 +143,7 @@ async function handleSubmit(e) {
                 GET IN <span className="text-primary">TOUCH</span>
               </h3>
               {[
-                { icon: <Mail className="w-5 h-5" />, label: "Email", value: "support@traxalon.gov.in", href: "support@traxalon.gov.in" },
+                { icon: <Mail className="w-5 h-5" />, label: "Email", value: "shetshruthivindya@gmail.com", href: "mailto:shetshruthivindya@gmail.com" },
                 { icon: <FaWhatsapp className="w-5 h-5" />, label: "WhatsApp", value: "+91 8951511111", href: "tel:+918951511111" },
                 { icon: <MapPin className="w-5 h-5" />, label: "Office", value: "Torsecure Cyber LLP ,Door No. 4-9-765/17, Second Floor, Manasa Towers, MG Road, Kodialbail, Mangalore, Karnataka", href: MAPS_URL },
               ].map((item, i) => (
