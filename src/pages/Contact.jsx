@@ -167,7 +167,7 @@ async function handleSubmit(e) {
                 GET IN <span className="text-primary">TOUCH</span>
               </h3>
               {[
-                { icon: <Mail className="w-5 h-5" />, label: "Email", value: "shetshruthivindya@gmail.com", href: "mailto:shetshruthivindya@gmail.com" },
+                { icon: <Mail className="w-5 h-5" />, label: "Email", value: "support@traxelon.com", href: "mailto:support@traxelon.com" },
                 { icon: <FaWhatsapp className="w-5 h-5" />, label: "WhatsApp", value: "+91 8951511111", href: "tel:+918951511111" },
                 { icon: <MapPin className="w-5 h-5" />, label: "Office", value: "Torsecure Cyber LLP ,Door No. 4-9-765/17, Second Floor, Manasa Towers, MG Road, Kodialbail, Mangalore, Karnataka", href: MAPS_URL },
               ].map((item, i) => (
