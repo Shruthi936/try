@@ -34,7 +34,7 @@ if (!captchaResponse.data.success) {
         email: process.env.BREVO_SENDER_EMAIL,
       },
       to: [{ 
-        email: "shetshruthivindya@gmail.com", 
+        email: "kshreya4207@gmail.com", 
         name: "Shruthi" 
       }],
       subject: `[Traxelon Contact] ${form.subject}`,
