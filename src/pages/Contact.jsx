@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Mail, MapPin, Send, Shield, Activity, ExternalLink } from "lucide-react";
+import { Mail, MapPin, Send, Shield, Activity, ExternalLink, Paperclip, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaWhatsapp } from "react-icons/fa";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
@@ -7,8 +7,9 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", badge: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
-  const hcaptchaRef = useRef(null);
-const [captchaToken, setCaptchaToken] = useState(null);
+  const hcaptchaRef = useRef(null);//changes 
+const [captchaToken, setCaptchaToken] = useState(null);//changes
+const [attachment, setAttachment] = useState(null);//changes
   
   const canvasRef = useRef(null);
 
@@ -60,6 +61,21 @@ const [captchaToken, setCaptchaToken] = useState(null);
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   }
+  async function handleFileChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert("File too large. Please attach a file under 5MB.");
+    e.target.value = "";
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const base64 = reader.result.split(",")[1];
+    setAttachment({ content: base64, name: file.name, type: file.type });
+  };
+  reader.readAsDataURL(file);
+}
 
   const [sending, setSending] = useState(false);
 
@@ -77,7 +93,7 @@ async function handleSubmit(e) {
       body: JSON.stringify({
       form,
       captchaToken,
-      attachment: null,
+      attachment: attachment,
 }),
     });
 
@@ -85,6 +101,7 @@ async function handleSubmit(e) {
 
     if (response.ok) {
       setSent(true);
+      setAttachment(null);//changes 
       setForm({ name: "", email: "", badge: "", subject: "", message: "" });
     } else {
       alert(data.error || "Failed to send. Please try again.");
@@ -228,6 +245,26 @@ async function handleSubmit(e) {
                     <textarea name="message" value={form.message} onChange={handleChange} rows={9} required
                       placeholder="Describe your issue or query..."
                       className="w-full bg-surface border border-surface-border rounded-lg px-4 py-3 font-body text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary transition-colors resize-none" />
+                  </div>
+
+                  {/* File Attachment */}
+                  <div>
+                    <label className="block font-body text-xs text-text-secondary uppercase tracking-wider mb-1.5">
+                      Attachment <span className="text-text-muted normal-case">(optional · image, PDF, doc · max 5MB)</span>
+                    </label>
+                    <label className="flex items-center gap-3 w-full bg-surface border border-surface-border rounded-lg px-4 py-3 cursor-pointer hover:border-primary transition-colors group">
+                      <Paperclip className="w-4 h-4 text-text-muted group-hover:text-primary transition-colors flex-shrink-0" />
+                      <span className="font-body text-sm text-text-muted group-hover:text-primary transition-colors truncate">
+                        {attachment ? attachment.name : "Choose file..."}
+                      </span>
+                      <input type="file" accept="image/*,.pdf,.doc,.docx" onChange={handleFileChange} className="hidden" />
+                    </label>
+                    {attachment && (
+                      <button type="button" onClick={() => setAttachment(null)}
+                        className="mt-1.5 flex items-center gap-1 font-body text-xs text-text-muted hover:text-red-400 transition-colors">
+                        <X className="w-3 h-3" /> Remove attachment
+                      </button>
+                    )}
                   </div>
                   
 <HCaptcha
